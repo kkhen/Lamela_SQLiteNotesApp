@@ -1,4 +1,4 @@
-package com.example.basic.sqlitenotesapp;
+package com.example.flab;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -66,4 +66,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return notesList;
     }
+
+    public void deleteNote(String title) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("notes", "title = ?", new String[]{title});
+        db.close();
+    }
+
 }

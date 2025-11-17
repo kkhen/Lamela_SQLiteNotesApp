@@ -1,4 +1,4 @@
-package com.example.basic.sqlitenotesapp;
+package com.example.flab;
 
 import android.os.Bundle;
 import android.widget.*;
@@ -20,6 +20,15 @@ public class MainActivity extends AppCompatActivity {
         etContent = findViewById(R.id.et_content);
         btnSave = findViewById(R.id.btn_save);
         listNotes = findViewById(R.id.list_notes);
+
+        listNotes.setOnItemLongClickListener((parent, view, position, id) -> {
+            String selectedNote = (String) parent.getItemAtPosition(position);
+
+            deleteNote(selectedNote);
+
+            return true; // important!
+        });
+
 
         dbHelper = new DatabaseHelper(this);
 
@@ -52,4 +61,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
         listNotes.setAdapter(adapter);
     }
+    private void deleteNote(String title) {
+        dbHelper.deleteNote(title);  // You must create this method in DatabaseHelper
+        loadNotes();                 // Refresh ListView
+        Toast.makeText(this, "Note deleted", Toast.LENGTH_SHORT).show();
+    }
+
 }
